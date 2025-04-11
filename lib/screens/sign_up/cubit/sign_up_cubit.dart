@@ -2,12 +2,14 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:realtime_firebase_chatapp/core/utils/validation.dart';
+import 'package:realtime_firebase_chatapp/data/repositories/auth_repository.dart';
 
 part 'sign_up_state.dart';
 
 class SignUpCubit extends Cubit<SignUpState> {
-  SignUpCubit() : super(const SignUpState());
+  SignUpCubit(this._authRepository) : super(const SignUpState());
 
+  final AuthRepository _authRepository;
   void usernameChanged(String username) =>
       emit(state.copyWith(username: Username.dirty(username)));
 
@@ -40,5 +42,34 @@ class SignUpCubit extends Cubit<SignUpState> {
         isConfirmedPasswordDirty: true,
       ),
     );
+  }
+
+  Future<void> signUpFormSubmitted() async {
+    if (!state.isValid) return;
+    emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
+    try {
+      await _authRepository.signUp(
+        fullName: state.fullName.value,
+        username: state.username.value,
+        email: state.email.value,
+        phoneNumber: state.phoneNumber.value,
+        password: state.password.value,
+      );
+      emit(state.copyWith(status: FormzSubmissionStatus.success));
+    } on SignUpWithEmailAndPasswordFailure catch (e) {
+      emit(
+        state.copyWith(
+          status: FormzSubmissionStatus.failure,
+          errorMessage: e.message,
+        ),
+      );
+    } catch (_) {
+      emit(
+        state.copyWith(
+          status: FormzSubmissionStatus.failure,
+          errorMessage: 'An unknown error occurred',
+        ),
+      );
+    }
   }
 }

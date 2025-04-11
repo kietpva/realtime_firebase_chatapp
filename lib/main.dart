@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:realtime_firebase_chatapp/core/app/app_provider.dart';
 import 'package:realtime_firebase_chatapp/core/app/app_router.dart';
 import 'package:realtime_firebase_chatapp/core/themes/theme.dart';
+import 'package:realtime_firebase_chatapp/data/auth_bloc/auth_bloc.dart';
+import 'package:realtime_firebase_chatapp/screens/home/home_screen.dart';
 import 'package:realtime_firebase_chatapp/screens/login/view/login_screen.dart';
 
 Future<void> main() async {
@@ -26,7 +28,20 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         navigatorKey: context.read<AppRouter>().navigatorKey,
         theme: theme,
-        home: const LoginScreen(),
+        home: BlocBuilder<AuthBloc, AuthState>(
+          bloc: context.read<AuthBloc>(),
+          builder: (context, state) {
+            if (state.status == AppStatus.unauthenticated) {
+              return const LoginScreen();
+            } else if (state.status == AppStatus.authenticated) {
+              return const HomeScreen();
+            }
+
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          },
+        ),
       ),
     );
   }
