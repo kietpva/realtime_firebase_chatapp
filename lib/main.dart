@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:realtime_firebase_chatapp/core/app/app_provider.dart';
@@ -5,8 +6,10 @@ import 'package:realtime_firebase_chatapp/core/app/app_router.dart';
 import 'package:realtime_firebase_chatapp/core/themes/theme.dart';
 import 'package:realtime_firebase_chatapp/screens/login/view/login_screen.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp();
 
   runApp(const AppProvider(child: MyApp()));
 }
