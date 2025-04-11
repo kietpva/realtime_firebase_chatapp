@@ -14,6 +14,18 @@ dependencies:
 
   cupertino_icons: ^1.0.8
 
+  # Flutter Widgets that make it easy to implement the BLoC (Business Logic Component) design pattern. Built to be used with the bloc state management package.
+  flutter_bloc: ^9.1.0
+
+  # A Dart package that helps to implement value based equality without needing to explicitly override == and hashCode.
+  equatable: ^2.0.7
+
+  # A unified form representation in Dart which aims to simplify form representation and validation in a generic way.
+  formz: ^0.8.0
+
+  # A Flutter package to use fonts from fonts.google.com. Supports HTTP fetching, caching, and asset bundling.
+  google_fonts: ^6.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
