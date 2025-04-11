@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
+import 'package:realtime_firebase_chatapp/core/app/app_router.dart';
 import 'package:realtime_firebase_chatapp/screens/login/cubit/login_cubit.dart';
+import 'package:realtime_firebase_chatapp/screens/sign_up/view/sign_up_screen.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({super.key});
@@ -123,8 +125,7 @@ class _SignUpButton extends StatelessWidget {
     final theme = Theme.of(context);
     return TextButton(
       key: const Key('loginForm_createAccount_flatButton'),
-      onPressed: () {},
-      // onPressed: () => context,
+      onPressed: () => context.read<AppRouter>().push(const SignUpScreen()),
       child: Text(
         'CREATE ACCOUNT',
         style: TextStyle(color: theme.primaryColor),

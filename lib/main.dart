@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:realtime_firebase_chatapp/core/app/app_provider.dart';
+import 'package:realtime_firebase_chatapp/core/app/app_router.dart';
 import 'package:realtime_firebase_chatapp/core/themes/theme.dart';
 import 'package:realtime_firebase_chatapp/screens/login/view/login_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+
+  runApp(const AppProvider(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -12,10 +17,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: theme,
-      home: const LoginScreen(),
+    return GestureDetector(
+      onTap: FocusManager.instance.primaryFocus?.unfocus,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        navigatorKey: context.read<AppRouter>().navigatorKey,
+        theme: theme,
+        home: const LoginScreen(),
+      ),
     );
   }
 }
