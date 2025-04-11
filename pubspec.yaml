@@ -26,6 +26,9 @@ dependencies:
   # A Flutter package to use fonts from fonts.google.com. Supports HTTP fetching, caching, and asset bundling.
   google_fonts: ^6.0.0
 
+  # Flutter plugin for Firebase Core, enabling connecting to multiple Firebase apps.
+  firebase_core: ^3.13.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
