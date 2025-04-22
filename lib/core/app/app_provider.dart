@@ -15,21 +15,22 @@ class AppProvider extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<FirebaseFirestore>(
-          lazy: true,
+          lazy: false,
           create: (context) => FirebaseFirestore.instance,
         ),
         RepositoryProvider<FirebaseAuth>(
-          lazy: true,
+          lazy: false,
           create: (context) => FirebaseAuth.instance,
         ),
         RepositoryProvider<AuthRepository>(
-          lazy: true,
+          lazy: false,
           create: (context) => AuthRepository(),
         ),
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
+            lazy: true,
             create: (context) => AuthBloc(
               authRepository: context.read<AuthRepository>(),
             )..add(const AuthCheckAuthentication()),

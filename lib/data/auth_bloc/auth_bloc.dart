@@ -34,9 +34,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       _authRepository.authStateChanges,
       onData: (user) async {
         if (user != null) {
-          final userData = await _authRepository.getUserData(user.uid);
-
-          emit(AuthState(user: userData));
+          if (state.user == UserModel.empty) {
+            final userData = await _authRepository.getUserData(user.uid);
+            emit(AuthState(user: userData));
+          }
         } else {
           emit(const AuthState(user: UserModel.empty));
         }
