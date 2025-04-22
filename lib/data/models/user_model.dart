@@ -7,7 +7,8 @@ class UserModel {
     required this.fullName,
     required this.email,
     required this.phoneNumber,
-    this.fcmToken,
+    this.fcmToken = const [],
+    this.blockedUsers = const [],
   });
 
   final String uid;
@@ -15,7 +16,8 @@ class UserModel {
   final String fullName;
   final String email;
   final String phoneNumber;
-  final String? fcmToken;
+  final List<String> fcmToken;
+  final List<String> blockedUsers;
 
   /// Empty user which represents an unauthenticated user.
   static const empty = UserModel(
@@ -24,6 +26,8 @@ class UserModel {
     fullName: '',
     email: '',
     phoneNumber: '',
+    fcmToken: [],
+    blockedUsers: [],
   );
 
   UserModel copyWith({
@@ -32,10 +36,7 @@ class UserModel {
     String? fullName,
     String? email,
     String? phoneNumber,
-    bool? isOnline,
-    Timestamp? lastSeen,
-    Timestamp? createdAt,
-    String? fcmToken,
+    List<String>? fcmToken,
     List<String>? blockedUsers,
   }) {
     return UserModel(
@@ -45,6 +46,7 @@ class UserModel {
       email: email ?? this.email,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       fcmToken: fcmToken ?? this.fcmToken,
+      blockedUsers: blockedUsers ?? this.blockedUsers,
     );
   }
 
@@ -56,7 +58,8 @@ class UserModel {
       fullName: data["fullName"] ?? "",
       email: data["email"] ?? "",
       phoneNumber: data["phoneNumber"] ?? "",
-      fcmToken: data["fcmToken"],
+      // fcmToken: data["fcmToken"] ?? <String>[],
+      blockedUsers: data["blockedUsers"] ?? <String>[],
     );
   }
 
@@ -67,6 +70,7 @@ class UserModel {
       'fullName': fullName,
       'phoneNumber': phoneNumber,
       'fcmToken': fcmToken,
+      'blockedUsers': blockedUsers,
     };
   }
 }
