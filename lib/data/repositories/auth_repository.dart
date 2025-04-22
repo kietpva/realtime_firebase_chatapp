@@ -15,39 +15,98 @@ class AuthRepository extends BaseRepository {
     required String password,
   }) async {
     try {
-      final formattedPhoneNumber = phoneNumber.replaceAll(
-        RegExp(r'\s+'),
-        "".trim(),
-      );
+      final formattedPhoneNumber = _formatPhoneNumber(phoneNumber);
 
-      final emailExists = await checkEmailExists(email);
-      if (emailExists) {
-        throw "An account with the same email already exists";
+      final results = await Future.wait([
+        checkEmailExists(email),
+        checkPhoneExists(formattedPhoneNumber),
+      ]);
+
+      if (results[0]) {
+        throw const AppException(
+            "An account with the same email already exists");
       }
-      final phoneNumberExists = await checkPhoneExists(formattedPhoneNumber);
-      if (phoneNumberExists) {
-        throw "An account with the same phone already exists";
+      if (results[1]) {
+        throw const AppException(
+            "An account with the same phone already exists");
       }
 
       final userCredential = await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      //create user model and save the user in the db firestore
+
+      final firebaseUser = userCredential.user;
+      if (firebaseUser == null) {
+        throw const SignUpWithEmailAndPasswordFailure();
+      }
 
       final user = UserModel(
-        uid: userCredential.user!.uid,
+        uid: firebaseUser.uid,
         username: username,
         fullName: fullName,
         email: email,
         phoneNumber: formattedPhoneNumber,
       );
+
       await saveUserData(user);
       return user;
     } on FirebaseAuthException catch (e) {
       throw SignUpWithEmailAndPasswordFailure.fromCode(e.code);
-    } catch (_) {
+    } catch (e) {
+      if (e is AppException) rethrow;
       throw const SignUpWithEmailAndPasswordFailure();
+    }
+  }
+
+  Future<UserModel> signInWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final userCredential = await auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      final firebaseUser = userCredential.user;
+      if (firebaseUser == null) {
+        throw const LogInWithEmailAndPasswordFailure();
+      }
+
+      final userData = await getUserData(firebaseUser.uid);
+      return userData;
+    } on FirebaseAuthException catch (e) {
+      throw LogInWithEmailAndPasswordFailure.fromCode(e.code);
+    } catch (_) {
+      throw const LogInWithEmailAndPasswordFailure();
+    }
+  }
+
+  Future<void> signOut() async {
+    await auth.signOut();
+  }
+
+  Future<void> saveUserData(UserModel user) async {
+    try {
+      await firestore.collection("users").doc(user.uid).set(user.toMap());
+    } catch (e) {
+      throw const AppException("Failed to save user data");
+    }
+  }
+
+  Future<UserModel> getUserData(String uid) async {
+    try {
+      final doc = await firestore.collection("users").doc(uid).get();
+
+      if (!doc.exists) {
+        throw const AppException("User data not found");
+      }
+
+      log('User id: ${doc.id}');
+      return UserModel.fromFirestore(doc);
+    } catch (e) {
+      throw const AppException("Failed to get user data");
     }
   }
 
@@ -67,10 +126,7 @@ class AuthRepository extends BaseRepository {
 
   Future<bool> checkPhoneExists(String phoneNumber) async {
     try {
-      final formattedPhoneNumber = phoneNumber.replaceAll(
-        RegExp(r'\s+'),
-        "".trim(),
-      );
+      final formattedPhoneNumber = _formatPhoneNumber(phoneNumber);
       final querySnapshot = await firestore
           .collection("users")
           .where("phoneNumber", isEqualTo: formattedPhoneNumber)
@@ -78,55 +134,23 @@ class AuthRepository extends BaseRepository {
 
       return querySnapshot.docs.isNotEmpty;
     } catch (e) {
-      log("Error checking email: $e");
+      log("Error checking phone: $e");
       return false;
     }
   }
 
-  Future<UserModel> signInWithEmailAndPassword({
-    required String email,
-    required String password,
-  }) async {
-    try {
-      final userCredential = await auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-
-      final userData = await getUserData(userCredential.user!.uid);
-      return userData;
-    } on FirebaseAuthException catch (e) {
-      throw LogInWithEmailAndPasswordFailure.fromCode(e.code);
-    } catch (_) {
-      throw const LogInWithEmailAndPasswordFailure();
-    }
+  String _formatPhoneNumber(String number) {
+    return number.replaceAll(RegExp(r'\s+'), '');
   }
+}
 
-  Future<void> saveUserData(UserModel user) async {
-    try {
-      firestore.collection("users").doc(user.uid).set(user.toMap());
-    } catch (e) {
-      throw "Failed to save user data";
-    }
-  }
+// Custom exception for general app-level errors
+class AppException implements Exception {
+  final String message;
+  const AppException(this.message);
 
-  Future<void> singOut() async {
-    await auth.signOut();
-  }
-
-  Future<UserModel> getUserData(String uid) async {
-    try {
-      final doc = await firestore.collection("users").doc(uid).get();
-
-      if (!doc.exists) {
-        throw "User data not found";
-      }
-      log('User id: ${doc.id}');
-      return UserModel.fromFirestore(doc);
-    } catch (e) {
-      throw "Failed to get user data";
-    }
-  }
+  @override
+  String toString() => message;
 }
 
 class SignUpWithEmailAndPasswordFailure implements Exception {
@@ -134,9 +158,6 @@ class SignUpWithEmailAndPasswordFailure implements Exception {
     this.message = 'An unknown exception occurred. Please try again.',
   ]);
 
-  /// Create an authentication message
-  /// from a firebase authentication exception code.
-  /// https://pub.dev/documentation/firebase_auth/latest/firebase_auth/FirebaseAuth/createUserWithEmailAndPassword.html
   factory SignUpWithEmailAndPasswordFailure.fromCode(String code) {
     switch (code) {
       case 'invalid-email':
@@ -153,7 +174,7 @@ class SignUpWithEmailAndPasswordFailure implements Exception {
         );
       case 'operation-not-allowed':
         return const SignUpWithEmailAndPasswordFailure(
-          'Operation is not allowed.  Please contact support.',
+          'Operation is not allowed. Please contact support.',
         );
       case 'weak-password':
         return const SignUpWithEmailAndPasswordFailure(
@@ -164,19 +185,14 @@ class SignUpWithEmailAndPasswordFailure implements Exception {
     }
   }
 
-  /// The associated error message.
   final String message;
 }
 
-/// Thrown during the login process if a failure occurs.
-/// https://pub.dev/documentation/firebase_auth/latest/firebase_auth/FirebaseAuth/signInWithEmailAndPassword.html
 class LogInWithEmailAndPasswordFailure implements Exception {
   const LogInWithEmailAndPasswordFailure([
     this.message = 'An unknown exception occurred. Please try again.',
   ]);
 
-  /// Create an authentication message
-  /// from a firebase authentication exception code.
   factory LogInWithEmailAndPasswordFailure.fromCode(String code) {
     switch (code) {
       case 'invalid-email':
@@ -200,6 +216,5 @@ class LogInWithEmailAndPasswordFailure implements Exception {
     }
   }
 
-  /// The associated error message.
   final String message;
 }

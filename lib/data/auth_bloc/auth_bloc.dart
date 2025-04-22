@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,17 +15,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required AuthRepository authRepository,
   })  : _authRepository = authRepository,
         super(const AuthState()) {
-    on<AuthCheckAuthentication>(_onUserSubscriptionRequested);
+    on<AuthCheckAuthentication>(
+      _authCheckAuthentication,
+      transformer: restartable(),
+    );
+
     on<AuthLogoutPressed>(_onLogoutPressed);
   }
 
   final AuthRepository _authRepository;
   StreamSubscription<User?>? authStateSubscription;
 
-  Future<void> _onUserSubscriptionRequested(
+  Future<void> _authCheckAuthentication(
     AuthCheckAuthentication event,
     Emitter<AuthState> emit,
-  ) {
+  ) async {
     return emit.onEach(
       _authRepository.authStateChanges,
       onData: (user) async {
@@ -41,6 +46,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _onLogoutPressed(AuthLogoutPressed event, Emitter<AuthState> emit) {
-    _authRepository.singOut();
+    emit(const AuthState(user: UserModel.empty));
+    _authRepository.signOut();
   }
 }
