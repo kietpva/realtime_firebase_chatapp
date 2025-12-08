@@ -30,22 +30,6 @@
 - Tap vào box để thấy animation
 - Giải thích: "Implicit Animation là cách đơn giản nhất để tạo animation"
 
-**Technical Details:**
-
-```dart
-// Chỉ cần thay đổi giá trị trong setState()
-AnimatedContainer(
-  duration: const Duration(milliseconds: 1200),
-  curve: Curves.easeInOut,
-  width: _big ? 200 : 100,  // Flutter tự động animate
-  height: _big ? 200 : 100,
-  decoration: BoxDecoration(
-    color: _big ? Colors.orange : Colors.blue,
-    borderRadius: BorderRadius.circular(_big ? 24 : 8),
-  ),
-)
-```
-
 **Key Technical Points:**
 - ✅ **AnimatedContainer**: Tự động animate khi properties thay đổi
 - ✅ **Duration & Curve**: Kiểm soát tốc độ và easing
@@ -66,11 +50,42 @@ AnimatedContainer(
 - Không cần kiểm soát chi tiết
 - Muốn code ngắn gọn
 
+**Technical Details:**
+
+```dart
+// Chỉ cần thay đổi giá trị trong setState()
+AnimatedContainer(
+  duration: const Duration(milliseconds: 1200),
+  curve: Curves.easeInOut,
+  width: _big ? 200 : 100,  // Flutter tự động animate
+  height: _big ? 200 : 100,
+  decoration: BoxDecoration(
+    color: _big ? Colors.orange : Colors.blue,
+    borderRadius: BorderRadius.circular(_big ? 24 : 8),
+  ),
+)
+```
+
 ### 1.2 Explicit Animation
 **Demo:**
 - Click vào "Explicit Animation"
 - Giải thích: "Explicit Animation cho phép kiểm soát chi tiết hơn"
 - Animation tự động loop (forward → reverse)
+
+**Key Technical Points:**
+- ✅ **AnimationController**: Điều khiển animation (play, pause, reverse, repeat)
+- ✅ **SingleTickerProviderStateMixin**: Cung cấp vsync cho controller
+- ✅ **Tween**: Định nghĩa range của animation (begin → end)
+- ✅ **CurvedAnimation**: Thêm easing curves
+- ✅ **AnimatedBuilder**: Rebuild widget khi animation value thay đổi
+- ✅ **AnimationStatus**: completed, dismissed, forward, reverse
+- ✅ **Memory Management**: Phải dispose controller
+
+**Khi nào dùng:**
+- Cần kiểm soát animation (pause, reverse, repeat)
+- Animation phức tạp với nhiều properties
+- Cần sync nhiều animations
+- Custom animation sequences
 
 **Technical Details:**
 
@@ -142,27 +157,21 @@ class _AnimationWidgetState extends State<AnimationWidget>
 }
 ```
 
-**Key Technical Points:**
-- ✅ **AnimationController**: Điều khiển animation (play, pause, reverse, repeat)
-- ✅ **SingleTickerProviderStateMixin**: Cung cấp vsync cho controller
-- ✅ **Tween**: Định nghĩa range của animation (begin → end)
-- ✅ **CurvedAnimation**: Thêm easing curves
-- ✅ **AnimatedBuilder**: Rebuild widget khi animation value thay đổi
-- ✅ **AnimationStatus**: completed, dismissed, forward, reverse
-- ✅ **Memory Management**: Phải dispose controller
-
-**Khi nào dùng:**
-- Cần kiểm soát animation (pause, reverse, repeat)
-- Animation phức tạp với nhiều properties
-- Cần sync nhiều animations
-- Custom animation sequences
-
 ### 1.3 Animated Card List
 **Demo:**
 - Click vào "Card List animated"
 - Thêm items (click + icon)
 - Xóa items (select → click - icon)
 - Giải thích: "AnimatedList cho phép animate khi thêm/xóa items"
+
+**Key Technical Points:**
+- ✅ **AnimatedList**: Widget cho animated list
+- ✅ **GlobalKey<AnimatedListState>**: Để control list từ bên ngoài
+- ✅ **insertItem()**: Trigger insert animation
+- ✅ **removeItem()**: Trigger remove animation với builder
+- ✅ **Animation parameter**: Tự động inject vào builder
+- ✅ **SizeTransition**: Widget để animate size (height)
+- ✅ **ListModel pattern**: Wrapper để sync data với AnimatedList
 
 **Technical Details:**
 
@@ -238,18 +247,6 @@ class ListModel<E> {
 }
 ```
 
-**Key Technical Points:**
-- ✅ **AnimatedList**: Widget cho animated list
-- ✅ **GlobalKey<AnimatedListState>**: Để control list từ bên ngoài
-- ✅ **insertItem()**: Trigger insert animation
-- ✅ **removeItem()**: Trigger remove animation với builder
-- ✅ **Animation parameter**: Tự động inject vào builder
-- ✅ **SizeTransition**: Widget để animate size (height)
-- ✅ **ListModel pattern**: Wrapper để sync data với AnimatedList
-
-**Kết luận Animation:**
-"Flutter cung cấp cả implicit và explicit animation. Implicit cho animation đơn giản, Explicit cho control chi tiết. AnimatedList cho UX tốt khi thao tác với list."
-
 ---
 
 ## 2. PAINTING AND CUSTOM DRAWING (8 phút)
@@ -263,6 +260,32 @@ class ListModel<E> {
 - Di chuyển mouse/pointer → mắt con gấu theo dõi
 - Toggle password visibility → mắt nhắm lại
 - Giải thích: "Sử dụng CustomPainter để vẽ hình con gấu"
+
+**Key Technical Points:**
+- ✅ **CustomPainter**: Abstract class để implement custom drawing
+- ✅ **Canvas API**: 
+  - `drawCircle()` - Vẽ hình tròn
+  - `drawOval()` - Vẽ hình oval
+  - `drawRect()` - Vẽ hình chữ nhật
+  - `drawPath()` - Vẽ path phức tạp
+  - `drawLine()` - Vẽ đường thẳng
+- ✅ **Paint object**: Định nghĩa style (color, strokeWidth, isAntiAlias)
+- ✅ **Coordinate system**: Offset(x, y) cho vị trí
+- ✅ **shouldRepaint()**: Optimize - chỉ repaint khi cần
+- ✅ **globalToLocal()**: Convert coordinates từ global sang local
+- ✅ **RenderBox**: Access layout information
+
+**Canvas API Methods:**
+```dart
+canvas.drawCircle(center, radius, paint);
+canvas.drawOval(rect, paint);
+canvas.drawRect(rect, paint);
+canvas.drawPath(path, paint);
+canvas.drawLine(start, end, paint);
+canvas.drawImage(image, offset, paint);
+canvas.clipRect(rect);  // Clip drawing area
+```
+
 
 **Technical Details:**
 
@@ -339,36 +362,29 @@ class _BearFaceState extends State<BearFace> {
 }
 ```
 
-**Key Technical Points:**
-- ✅ **CustomPainter**: Abstract class để implement custom drawing
-- ✅ **Canvas API**: 
-  - `drawCircle()` - Vẽ hình tròn
-  - `drawOval()` - Vẽ hình oval
-  - `drawRect()` - Vẽ hình chữ nhật
-  - `drawPath()` - Vẽ path phức tạp
-  - `drawLine()` - Vẽ đường thẳng
-- ✅ **Paint object**: Định nghĩa style (color, strokeWidth, isAntiAlias)
-- ✅ **Coordinate system**: Offset(x, y) cho vị trí
-- ✅ **shouldRepaint()**: Optimize - chỉ repaint khi cần
-- ✅ **globalToLocal()**: Convert coordinates từ global sang local
-- ✅ **RenderBox**: Access layout information
-
-**Canvas API Methods:**
-```dart
-canvas.drawCircle(center, radius, paint);
-canvas.drawOval(rect, paint);
-canvas.drawRect(rect, paint);
-canvas.drawPath(path, paint);
-canvas.drawLine(start, end, paint);
-canvas.drawImage(image, offset, paint);
-canvas.clipRect(rect);  // Clip drawing area
-```
-
 ### 2.2 Drag Drop
 **Demo:**
 - Click vào "Drag Drop"
 - Kéo các circle màu vào target box
 - Giải thích: "Sử dụng Draggable và DragTarget để tạo drag & drop"
+
+**Key Technical Points:**
+- ✅ **Draggable<T>**: Generic type cho type safety
+- ✅ **data property**: Data được truyền khi drop
+- ✅ **feedback**: Widget hiển thị khi đang drag (thường lớn hơn)
+- ✅ **childWhenDragging**: Widget thay thế ở vị trí gốc
+- ✅ **maxSimultaneousDrags**: Giới hạn số lượng drag cùng lúc
+- ✅ **DragTarget<T>**: Target nhận drop, phải match type
+- ✅ **onWillAcceptWithDetails**: Validate trước khi accept
+- ✅ **onAcceptWithDetails**: Callback khi accept thành công
+- ✅ **candidateData**: List items đang hover (có thể accept)
+- ✅ **rejectedData**: List items bị reject
+
+**Use Cases:**
+- Reorder items
+- Drag to delete
+- Drag to categorize
+- Drag to upload files
 
 **Technical Details:**
 
@@ -416,29 +432,22 @@ DragTarget<ColorType>(
 )
 ```
 
-**Key Technical Points:**
-- ✅ **Draggable<T>**: Generic type cho type safety
-- ✅ **data property**: Data được truyền khi drop
-- ✅ **feedback**: Widget hiển thị khi đang drag (thường lớn hơn)
-- ✅ **childWhenDragging**: Widget thay thế ở vị trí gốc
-- ✅ **maxSimultaneousDrags**: Giới hạn số lượng drag cùng lúc
-- ✅ **DragTarget<T>**: Target nhận drop, phải match type
-- ✅ **onWillAcceptWithDetails**: Validate trước khi accept
-- ✅ **onAcceptWithDetails**: Callback khi accept thành công
-- ✅ **candidateData**: List items đang hover (có thể accept)
-- ✅ **rejectedData**: List items bị reject
-
-**Use Cases:**
-- Reorder items
-- Drag to delete
-- Drag to categorize
-- Drag to upload files
-
 ### 2.3 Reorder List
 **Demo:**
 - Click vào "Reorder List"
 - Long press và kéo items để sắp xếp lại
 - Giải thích: "ReorderableListView widget có sẵn trong Flutter"
+
+**Key Technical Points:**
+- ✅ **ReorderableListView**: Built-in widget
+- ✅ **onReorder callback**: (oldIndex, newIndex) → handle reorder
+- ✅ **Key requirement**: Mỗi child phải có unique key
+- ✅ **Index adjustment**: newIndex cần adjust khi move down
+- ✅ **Automatic animation**: Flutter tự động animate
+- ✅ **Long press gesture**: Tự động handle
+
+**Kết luận Painting:**
+"CustomPainter cho phép vẽ bất kỳ thứ gì với Canvas API. Draggable/DragTarget cho drag & drop interactions. ReorderableListView cho reorder list dễ dàng."
 
 **Technical Details:**
 
@@ -460,18 +469,6 @@ ReorderableListView(
   )).toList(),
 )
 ```
-
-**Key Technical Points:**
-- ✅ **ReorderableListView**: Built-in widget
-- ✅ **onReorder callback**: (oldIndex, newIndex) → handle reorder
-- ✅ **Key requirement**: Mỗi child phải có unique key
-- ✅ **Index adjustment**: newIndex cần adjust khi move down
-- ✅ **Automatic animation**: Flutter tự động animate
-- ✅ **Long press gesture**: Tự động handle
-
-**Kết luận Painting:**
-"CustomPainter cho phép vẽ bất kỳ thứ gì với Canvas API. Draggable/DragTarget cho drag & drop interactions. ReorderableListView cho reorder list dễ dàng."
-
 ---
 
 ## 3. RICH TEXT EDITOR (4 phút)
@@ -488,6 +485,29 @@ ReorderableListView(
   - Chèn link
   - Undo/Redo
 - Click Save → Load để xem JSON serialization
+
+**Key Technical Points:**
+- ✅ **flutter_quill package**: Rich text editor library
+- ✅ **QuillController**: Quản lý document và selection
+- ✅ **Document**: Delta format (operational transform)
+- ✅ **Delta format**: JSON representation của document
+- ✅ **QuillEditor**: Widget hiển thị editor
+- ✅ **QuillSimpleToolbar**: Toolbar với các formatting buttons
+- ✅ **toDelta()**: Convert document sang Delta
+- ✅ **fromDelta()**: Convert Delta về Document
+- ✅ **toPlainText()**: Extract plain text (cho search, indexing)
+
+**Delta Format Example:**
+```json
+[
+  {"insert": "Hello "},
+  {"insert": "World", "attributes": {"bold": true}},
+  {"insert": "\n"}
+]
+```
+
+**Kết luận:**
+"flutter_quill sử dụng Delta format (operational transform) để quản lý document. Dễ serialize/deserialize, phù hợp cho note apps, comment systems."
 
 **Technical Details:**
 
@@ -562,29 +582,6 @@ class _RichTextEditorPageState extends State<RichTextEditorPage> {
 }
 ```
 
-**Key Technical Points:**
-- ✅ **flutter_quill package**: Rich text editor library
-- ✅ **QuillController**: Quản lý document và selection
-- ✅ **Document**: Delta format (operational transform)
-- ✅ **Delta format**: JSON representation của document
-- ✅ **QuillEditor**: Widget hiển thị editor
-- ✅ **QuillSimpleToolbar**: Toolbar với các formatting buttons
-- ✅ **toDelta()**: Convert document sang Delta
-- ✅ **fromDelta()**: Convert Delta về Document
-- ✅ **toPlainText()**: Extract plain text (cho search, indexing)
-
-**Delta Format Example:**
-```json
-[
-  {"insert": "Hello "},
-  {"insert": "World", "attributes": {"bold": true}},
-  {"insert": "\n"}
-]
-```
-
-**Kết luận:**
-"flutter_quill sử dụng Delta format (operational transform) để quản lý document. Dễ serialize/deserialize, phù hợp cho note apps, comment systems."
-
 ---
 
 ## 4. SLIVER TRAINING (5 phút)
@@ -597,6 +594,37 @@ class _RichTextEditorPageState extends State<RichTextEditorPage> {
 - SliverGrid với 3 columns
 - SliverList với nhiều items
 - SliverPersistentHeader pinned
+
+**Key Technical Points:**
+- ✅ **CustomScrollView**: Container cho slivers
+- ✅ **SliverAppBar**: Collapsible app bar
+  - `expandedHeight`: Height khi expanded
+  - `pinned`: Pin ở top khi scroll
+  - `floating`: Float khi scroll up
+  - `snap`: Snap animation
+- ✅ **SliverList**: List với lazy loading
+- ✅ **SliverGrid**: Grid với lazy loading
+- ✅ **SliverPersistentHeader**: Custom header có thể pin
+- ✅ **SliverChildBuilderDelegate**: Build children lazily
+- ✅ **Lazy loading**: Chỉ build widgets khi visible
+- ✅ **Performance**: Tốt với danh sách lớn (1000+ items)
+
+**Sliver Widgets:**
+- `SliverAppBar` - Collapsible app bar
+- `SliverList` - Lazy list
+- `SliverGrid` - Lazy grid
+- `SliverToBoxAdapter` - Wrap regular widget
+- `SliverFillRemaining` - Fill remaining space
+- `SliverPersistentHeader` - Persistent header
+
+**Use Cases:**
+- Google Play Store style
+- Instagram feed
+- Complex scrollable layouts
+- Large lists (performance)
+
+**Kết luận:**
+"Sliver widgets lazy load children, chỉ build khi visible. Tạo layout phức tạp với performance tốt. SliverAppBar cho collapsible header effect."
 
 **Technical Details:**
 
@@ -669,206 +697,9 @@ class _Header extends SliverPersistentHeaderDelegate {
 }
 ```
 
-**Key Technical Points:**
-- ✅ **CustomScrollView**: Container cho slivers
-- ✅ **SliverAppBar**: Collapsible app bar
-  - `expandedHeight`: Height khi expanded
-  - `pinned`: Pin ở top khi scroll
-  - `floating`: Float khi scroll up
-  - `snap`: Snap animation
-- ✅ **SliverList**: List với lazy loading
-- ✅ **SliverGrid**: Grid với lazy loading
-- ✅ **SliverPersistentHeader**: Custom header có thể pin
-- ✅ **SliverChildBuilderDelegate**: Build children lazily
-- ✅ **Lazy loading**: Chỉ build widgets khi visible
-- ✅ **Performance**: Tốt với danh sách lớn (1000+ items)
-
-**Sliver Widgets:**
-- `SliverAppBar` - Collapsible app bar
-- `SliverList` - Lazy list
-- `SliverGrid` - Lazy grid
-- `SliverToBoxAdapter` - Wrap regular widget
-- `SliverFillRemaining` - Fill remaining space
-- `SliverPersistentHeader` - Persistent header
-
-**Use Cases:**
-- Google Play Store style
-- Instagram feed
-- Complex scrollable layouts
-- Large lists (performance)
-
-**Kết luận:**
-"Sliver widgets lazy load children, chỉ build khi visible. Tạo layout phức tạp với performance tốt. SliverAppBar cho collapsible header effect."
-
 ---
 
-## 5. DEBUG SUPERPOWERS (5 phút)
-
-### Mở màn hình Debug Superpowers
-**Nói:** "Debug tools giúp chúng ta phát triển và tối ưu hiệu năng"
-
-### Demo:
-- Scroll qua danh sách posts
-- Giải thích: "Đây là demo về performance optimization"
-- Chỉ ra các kỹ thuật:
-  - Image optimization với device pixel ratio
-  - Lazy loading
-  - Efficient widget rebuilds
-  - Scroll performance
-
-**Technical Details:**
-
-```dart
-// debug_page.dart
-class DebugScreen extends StatefulWidget {
-  @override
-  State<DebugScreen> createState() => _DebugScreenState();
-}
-
-class _DebugScreenState extends State<DebugScreen> {
-  late final ScrollController _scrollController;
-  final DebugMockApi _api = const DebugMockApi();
-  late final Future<List<int>> _itemsFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController = ScrollController();
-    _scrollController.addListener(_scrollListener);
-    _itemsFuture = _api.fetchItems();  // Load data
-  }
-
-  void _scrollListener() {
-    setState(() {
-      _showScrollingToTopButton = _scrollController.offset > 100;
-    });
-  }
-
-  // 1. Image URL optimization với device pixel ratio
-  String getImageUrl({required BuildContext context, required int index}) {
-    final deviceWidth = MediaQuery.sizeOf(context).width;
-    final dpr = MediaQuery.devicePixelRatioOf(context);
-    final realWidth = (deviceWidth * dpr).round();
-    
-    // Request image với size phù hợp với device
-    return 'https://picsum.photos/seed/$index/$realWidth';
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: FutureBuilder<List<int>>(
-        future: _itemsFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const UltraOptimizedShimmer();  // Loading state
-          }
-
-          final items = snapshot.data ?? const <int>[];
-
-          return SingleChildScrollView(
-            controller: _scrollController,
-            child: Column(
-              children: items.map((e) => FacebookSingleImagePost(
-                avatarUrl: getAvatarUrl(index: e),
-                userName: "Ragnar Lothbrok",
-                timeAgo: "1 hours ago",
-                caption: "beautiful day $e",
-                imageUrl: getImageUrl(context: context, index: e),
-                likeCount: 120,
-                commentCount: 30,
-                shareCount: 8,
-              )).toList(),
-            ),
-          );
-        },
-      ),
-      floatingActionButton: _showScrollingToTopButton
-          ? FloatingActionButton(
-              onPressed: () {
-                _scrollController.animateTo(
-                  0.0,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeIn,
-                );
-              },
-              child: const Icon(Icons.arrow_upward),
-            )
-          : const SizedBox.shrink(),
-    );
-  }
-}
-```
-
-**Key Technical Points:**
-
-**1. Image Optimization:**
-```dart
-// Device Pixel Ratio (DPR) optimization
-final deviceWidth = MediaQuery.sizeOf(context).width;
-final dpr = MediaQuery.devicePixelRatioOf(context);
-final realWidth = (deviceWidth * dpr).round();
-
-// Request image với size phù hợp
-// iPhone 14 Pro: 393px width * 3 DPR = 1179px
-// Request 1200px image thay vì 4000px → Tiết kiệm bandwidth
-return 'https://picsum.photos/seed/$index/$realWidth';
-```
-
-**2. Performance Optimization Techniques:**
-- ✅ **Device Pixel Ratio**: Request image size phù hợp với screen
-- ✅ **Lazy loading**: Chỉ load images khi visible
-- ✅ **FutureBuilder**: Async data loading
-- ✅ **ScrollController**: Efficient scroll handling
-- ✅ **Conditional rendering**: Chỉ render khi cần
-- ✅ **const constructors**: Reduce rebuilds
-
-**3. Flutter DevTools:**
-```dart
-// Enable performance overlay trong main.dart
-MaterialApp(
-  showPerformanceOverlay: true,  // Show FPS overlay
-  // ...
-)
-```
-
-**DevTools Features:**
-- **Performance**: Profile app performance
-- **Memory**: Track memory usage
-- **Network**: Monitor network requests
-- **Widget Inspector**: Inspect widget tree
-- **Timeline**: View frame rendering
-
-**4. Debug vs Release Mode:**
-```dart
-// Debug mode
-if (kDebugMode) {
-  print("Debug info");
-  // Enable debug features
-}
-
-// Release mode
-if (kReleaseMode) {
-  // Production code
-  FirebaseCrashlytics.instance.recordError(...);
-}
-```
-
-**Performance Best Practices:**
-1. ✅ **Image optimization**: Request size phù hợp với DPR
-2. ✅ **Lazy loading**: Chỉ load khi cần
-3. ✅ **const widgets**: Reduce rebuilds
-4. ✅ **Efficient rebuilds**: Chỉ rebuild phần cần thiết
-5. ✅ **ListView.builder**: Lazy list rendering
-6. ✅ **Avoid setState in build**: Prevent rebuild loops
-7. ✅ **Use keys**: Optimize widget updates
-
-**Kết luận:**
-"Performance optimization quan trọng cho UX. Image optimization với DPR tiết kiệm bandwidth. DevTools để profile và debug. Best practices để app mượt mà."
-
----
-
-## 6. ATTENDANCE - OFFLINE FIRST ARCHITECTURE (12 phút) ⭐ QUAN TRỌNG NHẤT
+## 5. ATTENDANCE - OFFLINE FIRST ARCHITECTURE (12 phút) ⭐ QUAN TRỌNG NHẤT
 
 ### Mở màn hình Attendance
 **Nói:** "Đây là feature quan trọng nhất - Offline First Architecture"
@@ -1260,7 +1091,7 @@ class OfflineFirstArchitectureScreen extends StatelessWidget {
 
 ---
 
-## 7. CRASH ANALYTICS (5 phút)
+## 6. CRASH ANALYTICS (5 phút)
 
 ### Mở màn hình Crash Analytics
 **Nói:** "Firebase Crashlytics giúp theo dõi và fix bugs trong production"
@@ -1282,6 +1113,46 @@ class OfflineFirstArchitectureScreen extends StatelessWidget {
    - Giải thích: "Fatal crash sẽ đóng app"
    - Crash được gửi lên Firebase
    - Có thể xem stack trace trong dashboard
+
+**Key Technical Points:**
+- ✅ **Firebase.initializeApp()**: Initialize Firebase trước khi dùng
+- ✅ **FlutterError.onError**: Catch Flutter framework errors
+- ✅ **PlatformDispatcher.onError**: Catch async errors (Future, Stream)
+- ✅ **kDebugMode check**: Chỉ enable trong production
+- ✅ **setUserIdentifier()**: Gắn user ID để filter crashes
+- ✅ **setCustomKey()**: Custom key-value pairs để filter/debug
+- ✅ **log()**: Log messages (không phải error)
+- ✅ **recordError()**: Record non-fatal errors
+- ✅ **crash()**: Force crash app (testing only)
+- ✅ **Stack trace**: Tự động capture stack trace
+
+**Crashlytics API:**
+```dart
+// User identification
+FirebaseCrashlytics.instance.setUserIdentifier("user_123");
+
+// Custom keys
+FirebaseCrashlytics.instance.setCustomKey("key", "value");
+FirebaseCrashlytics.instance.setCustomKey("number", 42);
+FirebaseCrashlytics.instance.setCustomKey("bool", true);
+
+// Logging
+FirebaseCrashlytics.instance.log("User did something");
+
+// Record errors
+FirebaseCrashlytics.instance.recordError(error, stack, fatal: false);
+
+// Force crash (testing)
+FirebaseCrashlytics.instance.crash();
+```
+
+**Best Practices:**
+1. ✅ **Only in production**: Không enable trong debug mode
+2. ✅ **Set user info**: Để filter crashes theo user
+3. ✅ **Custom keys**: Thêm context (screen, action, etc.)
+4. ✅ **Log important events**: Track user actions
+5. ✅ **Non-fatal errors**: Record errors không crash app
+6. ✅ **Test crashes**: Test với test devices
 
 **Technical Details:**
 
@@ -1382,52 +1253,13 @@ class CrashDemoScreen extends StatelessWidget {
 }
 ```
 
-**Key Technical Points:**
-- ✅ **Firebase.initializeApp()**: Initialize Firebase trước khi dùng
-- ✅ **FlutterError.onError**: Catch Flutter framework errors
-- ✅ **PlatformDispatcher.onError**: Catch async errors (Future, Stream)
-- ✅ **kDebugMode check**: Chỉ enable trong production
-- ✅ **setUserIdentifier()**: Gắn user ID để filter crashes
-- ✅ **setCustomKey()**: Custom key-value pairs để filter/debug
-- ✅ **log()**: Log messages (không phải error)
-- ✅ **recordError()**: Record non-fatal errors
-- ✅ **crash()**: Force crash app (testing only)
-- ✅ **Stack trace**: Tự động capture stack trace
-
-**Crashlytics API:**
-```dart
-// User identification
-FirebaseCrashlytics.instance.setUserIdentifier("user_123");
-
-// Custom keys
-FirebaseCrashlytics.instance.setCustomKey("key", "value");
-FirebaseCrashlytics.instance.setCustomKey("number", 42);
-FirebaseCrashlytics.instance.setCustomKey("bool", true);
-
-// Logging
-FirebaseCrashlytics.instance.log("User did something");
-
-// Record errors
-FirebaseCrashlytics.instance.recordError(error, stack, fatal: false);
-
-// Force crash (testing)
-FirebaseCrashlytics.instance.crash();
-```
-
-**Best Practices:**
-1. ✅ **Only in production**: Không enable trong debug mode
-2. ✅ **Set user info**: Để filter crashes theo user
-3. ✅ **Custom keys**: Thêm context (screen, action, etc.)
-4. ✅ **Log important events**: Track user actions
-5. ✅ **Non-fatal errors**: Record errors không crash app
-6. ✅ **Test crashes**: Test với test devices
 
 **Kết luận:**
 "Firebase Crashlytics cung cấp stack trace đầy đủ, custom keys để filter, user identification. Essential cho production monitoring."
 
 ---
 
-## 8. HOME WIDGET (3 phút)
+## 7. HOME WIDGET (3 phút)
 
 ### Giải thích Home Widget
 **Nói:** "Home Widget cho phép hiển thị thông tin trên màn hình chính"
@@ -1535,6 +1367,172 @@ struct CalendarWidget: Widget {
 
 **Kết luận:**
 "Home Widget giúp app có mặt trên home screen, tăng khả năng user quay lại sử dụng app. Cần implement native code cho Android/iOS."
+
+---
+
+## 8. DEBUG SUPERPOWERS (5 phút)
+
+### Mở màn hình Debug Superpowers
+**Nói:** "Debug tools giúp chúng ta phát triển và tối ưu hiệu năng"
+
+### Demo:
+- Scroll qua danh sách posts
+- Giải thích: "Đây là demo về performance optimization"
+- Chỉ ra các kỹ thuật:
+  - Image optimization với device pixel ratio
+  - Lazy loading
+  - Efficient widget rebuilds
+  - Scroll performance
+
+**Technical Details:**
+
+```dart
+// debug_page.dart
+class DebugScreen extends StatefulWidget {
+  @override
+  State<DebugScreen> createState() => _DebugScreenState();
+}
+
+class _DebugScreenState extends State<DebugScreen> {
+  late final ScrollController _scrollController;
+  final DebugMockApi _api = const DebugMockApi();
+  late final Future<List<int>> _itemsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
+    _itemsFuture = _api.fetchItems();  // Load data
+  }
+
+  void _scrollListener() {
+    setState(() {
+      _showScrollingToTopButton = _scrollController.offset > 100;
+    });
+  }
+
+  // 1. Image URL optimization với device pixel ratio
+  String getImageUrl({required BuildContext context, required int index}) {
+    final deviceWidth = MediaQuery.sizeOf(context).width;
+    final dpr = MediaQuery.devicePixelRatioOf(context);
+    final realWidth = (deviceWidth * dpr).round();
+    
+    // Request image với size phù hợp với device
+    return 'https://picsum.photos/seed/$index/$realWidth';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: FutureBuilder<List<int>>(
+        future: _itemsFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const UltraOptimizedShimmer();  // Loading state
+          }
+
+          final items = snapshot.data ?? const <int>[];
+
+          return SingleChildScrollView(
+            controller: _scrollController,
+            child: Column(
+              children: items.map((e) => FacebookSingleImagePost(
+                avatarUrl: getAvatarUrl(index: e),
+                userName: "Ragnar Lothbrok",
+                timeAgo: "1 hours ago",
+                caption: "beautiful day $e",
+                imageUrl: getImageUrl(context: context, index: e),
+                likeCount: 120,
+                commentCount: 30,
+                shareCount: 8,
+              )).toList(),
+            ),
+          );
+        },
+      ),
+      floatingActionButton: _showScrollingToTopButton
+          ? FloatingActionButton(
+              onPressed: () {
+                _scrollController.animateTo(
+                  0.0,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeIn,
+                );
+              },
+              child: const Icon(Icons.arrow_upward),
+            )
+          : const SizedBox.shrink(),
+    );
+  }
+}
+```
+
+**Key Technical Points:**
+
+**1. Image Optimization:**
+```dart
+// Device Pixel Ratio (DPR) optimization
+final deviceWidth = MediaQuery.sizeOf(context).width;
+final dpr = MediaQuery.devicePixelRatioOf(context);
+final realWidth = (deviceWidth * dpr).round();
+
+// Request image với size phù hợp
+// iPhone 14 Pro: 393px width * 3 DPR = 1179px
+// Request 1200px image thay vì 4000px → Tiết kiệm bandwidth
+return 'https://picsum.photos/seed/$index/$realWidth';
+```
+
+**2. Performance Optimization Techniques:**
+- ✅ **Device Pixel Ratio**: Request image size phù hợp với screen
+- ✅ **Lazy loading**: Chỉ load images khi visible
+- ✅ **FutureBuilder**: Async data loading
+- ✅ **ScrollController**: Efficient scroll handling
+- ✅ **Conditional rendering**: Chỉ render khi cần
+- ✅ **const constructors**: Reduce rebuilds
+
+**3. Flutter DevTools:**
+```dart
+// Enable performance overlay trong main.dart
+MaterialApp(
+  showPerformanceOverlay: true,  // Show FPS overlay
+  // ...
+)
+```
+
+**DevTools Features:**
+- **Performance**: Profile app performance
+- **Memory**: Track memory usage
+- **Network**: Monitor network requests
+- **Widget Inspector**: Inspect widget tree
+- **Timeline**: View frame rendering
+
+**4. Debug vs Release Mode:**
+```dart
+// Debug mode
+if (kDebugMode) {
+  print("Debug info");
+  // Enable debug features
+}
+
+// Release mode
+if (kReleaseMode) {
+  // Production code
+  FirebaseCrashlytics.instance.recordError(...);
+}
+```
+
+**Performance Best Practices:**
+1. ✅ **Image optimization**: Request size phù hợp với DPR
+2. ✅ **Lazy loading**: Chỉ load khi cần
+3. ✅ **const widgets**: Reduce rebuilds
+4. ✅ **Efficient rebuilds**: Chỉ rebuild phần cần thiết
+5. ✅ **ListView.builder**: Lazy list rendering
+6. ✅ **Avoid setState in build**: Prevent rebuild loops
+7. ✅ **Use keys**: Optimize widget updates
+
+**Kết luận:**
+"Performance optimization quan trọng cho UX. Image optimization với DPR tiết kiệm bandwidth. DevTools để profile và debug. Best practices để app mượt mà."
 
 ---
 
