@@ -24,11 +24,31 @@
 ### Mở màn hình Animation
 **Nói:** "Bắt đầu với Animation - một trong những điểm mạnh của Flutter"
 
+### Mục đích của Animation Training
+**Tại sao cần Animation:**
+- ✅ **Cải thiện UX**: Animation làm cho app mượt mà, chuyên nghiệp hơn
+- ✅ **Visual feedback**: Giúp user hiểu được hành động của họ (tap, swipe, etc.)
+- ✅ **Smooth transitions**: Chuyển đổi giữa các states mượt mà, không đột ngột
+- ✅ **Engagement**: Tăng sự tương tác và hứng thú của user với app
+- ✅ **Flutter strength**: Flutter có animation framework mạnh mẽ, dễ sử dụng
+
 ### 1.1 Implicit Animation
+
+**Mục đích:**
+- ✅ **Đơn giản hóa**: Code ngắn gọn, không cần quản lý AnimationController
+- ✅ **Tự động**: Flutter tự động animate khi properties thay đổi
+- ✅ **Performance**: Optimized, chỉ rebuild khi cần
+- ✅ **Phù hợp**: Cho animation đơn giản, không cần kiểm soát chi tiết
+
 **Demo:**
 - Click vào "Implicit Animation"
 - Tap vào box để thấy animation
 - Giải thích: "Implicit Animation là cách đơn giản nhất để tạo animation"
+
+**Khi nào dùng:**
+- Animation đơn giản (size, color, position)
+- Không cần kiểm soát chi tiết
+- Muốn code ngắn gọn
 
 **Key Technical Points:**
 - ✅ **AnimatedContainer**: Tự động animate khi properties thay đổi
@@ -44,11 +64,6 @@
 - `AnimatedPadding` - Animate padding
 - `AnimatedAlign` - Animate alignment
 - `TweenAnimationBuilder` - Custom tween animations
-
-**Khi nào dùng:**
-- Animation đơn giản (size, color, position)
-- Không cần kiểm soát chi tiết
-- Muốn code ngắn gọn
 
 **Technical Details:**
 
@@ -66,11 +81,36 @@ AnimatedContainer(
 )
 ```
 
+**Technical Deep Dive - Implicit Animation:**
+- ✅ **Automatic interpolation**: Flutter tự động interpolate giữa old và new values
+- ✅ **Tween internally**: Flutter tạo Tween internally, không cần khai báo
+- ✅ **Rebuild optimization**: Chỉ rebuild widget khi animation value thay đổi
+- ✅ **Curve types**: 
+  - `Curves.linear` - Constant speed
+  - `Curves.easeInOut` - Slow start, fast middle, slow end
+  - `Curves.bounceOut` - Bounce effect
+  - `Curves.elasticOut` - Elastic effect
+- ✅ **Performance**: Sử dụng `AnimationController` internally, optimized cho performance
+
 ### 1.2 Explicit Animation
+
+**Mục đích:**
+- ✅ **Kiểm soát chi tiết**: Play, pause, reverse, repeat animation
+- ✅ **Phức tạp hơn**: Sync nhiều animations, custom sequences
+- ✅ **Timing control**: Kiểm soát chính xác timing và curves
+- ✅ **Reusable**: Có thể tái sử dụng AnimationController cho nhiều animations
+- ✅ **Advanced use cases**: Cho animation phức tạp mà Implicit không đáp ứng được
+
 **Demo:**
 - Click vào "Explicit Animation"
 - Giải thích: "Explicit Animation cho phép kiểm soát chi tiết hơn"
 - Animation tự động loop (forward → reverse)
+
+**Khi nào dùng:**
+- Cần kiểm soát animation (pause, reverse, repeat)
+- Animation phức tạp với nhiều properties
+- Cần sync nhiều animations
+- Custom animation sequences
 
 **Key Technical Points:**
 - ✅ **AnimationController**: Điều khiển animation (play, pause, reverse, repeat)
@@ -80,12 +120,6 @@ AnimatedContainer(
 - ✅ **AnimatedBuilder**: Rebuild widget khi animation value thay đổi
 - ✅ **AnimationStatus**: completed, dismissed, forward, reverse
 - ✅ **Memory Management**: Phải dispose controller
-
-**Khi nào dùng:**
-- Cần kiểm soát animation (pause, reverse, repeat)
-- Animation phức tạp với nhiều properties
-- Cần sync nhiều animations
-- Custom animation sequences
 
 **Technical Details:**
 
@@ -158,6 +192,13 @@ class _AnimationWidgetState extends State<AnimationWidget>
 ```
 
 ### 1.3 Animated Card List
+
+**Mục đích:**
+- ✅ **Visual feedback**: User thấy rõ item được thêm/xóa ở đâu
+- ✅ **Smooth UX**: Không có "jump" đột ngột khi list thay đổi
+- ✅ **Professional**: Tạo cảm giác app được làm kỹ lưỡng
+- ✅ **User orientation**: Giúp user theo dõi được thay đổi trong list
+
 **Demo:**
 - Click vào "Card List animated"
 - Thêm items (click + icon)
@@ -251,10 +292,24 @@ class ListModel<E> {
 
 ## 2. PAINTING AND CUSTOM DRAWING (8 phút)
 
+### Mục đích của Painting and Custom Drawing
+**Tại sao cần Custom Drawing:**
+- ✅ **Custom UI**: Vẽ UI không có sẵn trong Flutter widgets
+- ✅ **Brand identity**: Tạo custom graphics phù hợp với brand
+- ✅ **Performance**: Vẽ trực tiếp bằng Canvas API, hiệu năng cao
+- ✅ **Flexibility**: Vẽ bất kỳ hình dạng nào (charts, custom shapes, illustrations)
+- ✅ **Interactive graphics**: Kết hợp với gestures để tạo interactive UI
+
 ### Mở màn hình Painting and Custom Drawing
 **Nói:** "Tiếp theo là Painting - khi bạn cần vẽ custom UI không có sẵn"
 
 ### 2.1 Painting Bear
+
+**Mục đích:**
+- ✅ **Demo CustomPainter**: Ví dụ thực tế về cách vẽ custom graphics
+- ✅ **Interactive**: Eye tracking cho thấy khả năng tương tác
+- ✅ **Coordinate system**: Hiểu cách làm việc với coordinates
+- ✅ **Canvas API**: Thực hành các methods cơ bản của Canvas
 **Demo:**
 - Click vào "Painting Bear"
 - Di chuyển mouse/pointer → mắt con gấu theo dõi
@@ -334,6 +389,30 @@ class _BearPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
+```
+
+**Technical Deep Dive - CustomPainter:**
+- ✅ **Coordinate system**: 
+  - Origin (0,0) ở top-left
+  - X tăng về bên phải
+  - Y tăng xuống dưới
+  - Size: width (x-axis), height (y-axis)
+- ✅ **Paint object properties**:
+  - `color`: Màu vẽ
+  - `strokeWidth`: Độ dày đường viền
+  - `style`: `PaintingStyle.fill` (tô) hoặc `PaintingStyle.stroke` (viền)
+  - `isAntiAlias`: Làm mịn edges (true = smooth, false = pixelated)
+- ✅ **shouldRepaint()**: 
+  - Return `false` nếu không cần repaint (optimization)
+  - Return `true` nếu cần repaint khi properties thay đổi
+  - So sánh với `oldDelegate` để quyết định
+- ✅ **Canvas transformations**:
+  - `canvas.save()` / `canvas.restore()`: Save/restore canvas state
+  - `canvas.translate()`: Di chuyển origin
+  - `canvas.rotate()`: Xoay canvas
+  - `canvas.scale()`: Scale canvas
+
+``` dart
 
 // 3. Eye tracking với coordinate conversion
 class _BearFaceState extends State<BearFace> {
@@ -362,7 +441,15 @@ class _BearFaceState extends State<BearFace> {
 }
 ```
 
+
 ### 2.2 Drag Drop
+
+**Mục đích:**
+- ✅ **Intuitive UX**: Drag & drop là interaction pattern quen thuộc
+- ✅ **Efficient**: Nhanh hơn tap nhiều lần để move items
+- ✅ **Visual feedback**: User thấy rõ item đang được di chuyển
+- ✅ **Type safety**: Generic types đảm bảo chỉ drop đúng loại item
+
 **Demo:**
 - Click vào "Drag Drop"
 - Kéo các circle màu vào target box
@@ -433,6 +520,13 @@ DragTarget<ColorType>(
 ```
 
 ### 2.3 Reorder List
+
+**Mục đích:**
+- ✅ **User control**: Cho phép user tự sắp xếp theo ý muốn
+- ✅ **Built-in**: Flutter cung cấp sẵn, không cần implement từ đầu
+- ✅ **Standard pattern**: Pattern quen thuộc trên mobile (iOS, Android)
+- ✅ **Efficient**: Nhanh hơn tap để move từng item
+
 **Demo:**
 - Click vào "Reorder List"
 - Long press và kéo items để sắp xếp lại
@@ -473,6 +567,22 @@ ReorderableListView(
 
 ## 3. RICH TEXT EDITOR (4 phút)
 
+### Mục đích của Rich Text Editor
+**Tại sao cần Rich Text Editor:**
+- ✅ **User content**: Cho phép user tạo nội dung phong phú (formatting, links, lists)
+- ✅ **Note apps**: Essential cho note-taking apps (Notion, Evernote style)
+- ✅ **Comment systems**: Cho phép user format comments, replies
+- ✅ **Document editing**: Tạo documents với formatting
+- ✅ **Delta format**: Operational transform format, dễ sync và collaborate
+
+**Khi nào cần Rich Text Editor:**
+- Note-taking applications
+- Comment/reply systems
+- Document editors
+- Email composers
+- Blog post editors
+- Collaborative editing (real-time sync)
+
 ### Mở màn hình Rich Text Editor
 **Nói:** "Rich Text Editor sử dụng flutter_quill - một editor mạnh mẽ"
 
@@ -506,8 +616,25 @@ ReorderableListView(
 ]
 ```
 
+**Technical Deep Dive - Delta Format:**
+- ✅ **Operational Transform (OT)**: Format được thiết kế cho real-time collaboration
+- ✅ **Composable**: Có thể combine nhiều operations (insert, delete, retain)
+- ✅ **Efficient**: Chỉ lưu changes, không lưu toàn bộ document state
+- ✅ **Serializable**: Dễ convert sang JSON để lưu database/API
+- ✅ **Delta operations**:
+  - `{"insert": "text"}`: Insert text
+  - `{"insert": "text", "attributes": {...}}`: Insert với formatting
+  - `{"delete": 5}`: Delete 5 characters
+  - `{"retain": 3}`: Retain (giữ nguyên) 3 characters
+- ✅ **Attributes**: 
+  - `bold`, `italic`, `underline`: Text formatting
+  - `link`: URL
+  - `header`: Heading level (1-6)
+  - `list`: Bullet/numbered list
+  - `blockquote`: Quote block
+
 **Kết luận:**
-"flutter_quill sử dụng Delta format (operational transform) để quản lý document. Dễ serialize/deserialize, phù hợp cho note apps, comment systems."
+"flutter_quill sử dụng Delta format (operational transform) để quản lý document. Dễ serialize/deserialize, phù hợp cho note apps, comment systems. Delta format cũng hỗ trợ real-time collaboration."
 
 **Technical Details:**
 
@@ -586,6 +713,22 @@ class _RichTextEditorPageState extends State<RichTextEditorPage> {
 
 ## 4. SLIVER TRAINING (5 phút)
 
+### Mục đích của Sliver Training
+**Tại sao cần Sliver:**
+- ✅ **Performance**: Lazy loading - chỉ build widgets khi visible
+- ✅ **Complex layouts**: Tạo scrollable layout phức tạp (app bar collapse, sticky headers)
+- ✅ **Memory efficient**: Không load toàn bộ list vào memory
+- ✅ **Smooth scrolling**: Scroll mượt mà ngay cả với 1000+ items
+- ✅ **Modern UI**: Tạo UI hiện đại như Google Play Store, Instagram feed
+
+**Khi nào cần Sliver:**
+- Large lists (100+ items)
+- Complex scrollable layouts
+- Collapsible app bars
+- Sticky headers/sections
+- Mixed content (grid + list + custom widgets)
+- Performance-critical screens
+
 ### Mở màn hình Sliver Training
 **Nói:** "Sliver là cách để tạo scrollable layout phức tạp và hiệu quả"
 
@@ -623,8 +766,26 @@ class _RichTextEditorPageState extends State<RichTextEditorPage> {
 - Complex scrollable layouts
 - Large lists (performance)
 
+**Technical Deep Dive - Sliver Lazy Loading:**
+- ✅ **Viewport concept**: Sliver chỉ build widgets trong viewport (visible area)
+- ✅ **SliverChildBuilderDelegate**: 
+  - `builder`: Function build widget tại index
+  - `childCount`: Tổng số items (null = infinite)
+  - `addAutomaticKeepAlives`: Keep widgets alive khi scroll out (default: true)
+  - `addRepaintBoundaries`: Wrap widgets với RepaintBoundary (default: true)
+- ✅ **Performance optimization**:
+  - Chỉ build widgets khi visible
+  - Dispose widgets khi scroll out (nếu không keep alive)
+  - Reuse widgets khi scroll back
+- ✅ **SliverAppBar behavior**:
+  - `pinned: true`: Pin ở top khi scroll
+  - `floating: true`: Float khi scroll up (không cần scroll đến top)
+  - `snap: true`: Snap animation (chỉ work với floating: true)
+  - `expandedHeight`: Height khi fully expanded
+  - `collapsedHeight`: Height khi collapsed (default: AppBar height)
+
 **Kết luận:**
-"Sliver widgets lazy load children, chỉ build khi visible. Tạo layout phức tạp với performance tốt. SliverAppBar cho collapsible header effect."
+"Sliver widgets lazy load children, chỉ build khi visible. Tạo layout phức tạp với performance tốt. SliverAppBar cho collapsible header effect. Essential cho apps với large lists."
 
 **Technical Details:**
 
@@ -700,6 +861,27 @@ class _Header extends SliverPersistentHeaderDelegate {
 ---
 
 ## 5. ATTENDANCE - OFFLINE FIRST ARCHITECTURE (12 phút) ⭐ QUAN TRỌNG NHẤT
+
+### Mục đích của Offline First Architecture
+**Tại sao cần Offline First:**
+- ✅ **Reliability**: App hoạt động ngay cả khi không có internet
+- ✅ **User experience**: User không bị chặn bởi network issues
+- ✅ **Data safety**: Không mất dữ liệu khi network bị gián đoạn
+- ✅ **Performance**: Local database nhanh hơn network requests
+- ✅ **Real-world requirement**: Hầu hết production apps cần offline support
+- ✅ **Best practice**: Industry standard cho mobile apps
+
+**Khi nào cần Offline First:**
+- Apps cần hoạt động offline (attendance, note-taking, task management)
+- Apps với unreliable network (rural areas, underground, airplane)
+- Apps với critical data (không được mất dữ liệu)
+- Apps cần fast local access (caching, local-first)
+
+**Vấn đề giải quyết:**
+- ❌ **Không có offline**: App không hoạt động khi mất internet → Bad UX
+- ❌ **Mất dữ liệu**: User input bị mất khi network fail → Data loss
+- ❌ **Chậm**: Mọi thao tác phải chờ network → Slow UX
+- ✅ **Offline First**: Luôn lưu local trước → Reliable, fast, safe
 
 ### Mở màn hình Attendance
 **Nói:** "Đây là feature quan trọng nhất - Offline First Architecture"
@@ -842,6 +1024,25 @@ LazyDatabase _openConnection() {
 - ✅ **Migrations**: Schema versioning
 - ✅ **Companion objects**: For inserts/updates
 - ✅ **Query builder**: Type-safe queries
+
+**Technical Deep Dive - Drift:**
+- ✅ **Code generation**: 
+  - Run `dart run build_runner build` để generate code
+  - Generate từ `@DriftDatabase` và `Table` classes
+  - Type-safe: Compile-time errors nếu query sai
+- ✅ **Companion objects**:
+  - `AttendanceTableCompanion`: For inserts/updates
+  - `Value<T>`: Wrap values để distinguish null vs not set
+  - `Value.absent`: Field không được set
+  - `Value(value)`: Field được set với value
+- ✅ **Query builder**:
+  - Type-safe: Compile-time check
+  - Chainable: `select(table)..where(...)..orderBy(...)`
+  - SQL-like: Familiar syntax
+- ✅ **Stream queries**:
+  - `watch()`: Return Stream, tự động emit khi data thay đổi
+  - `get()`: Return Future, one-time query
+  - Reactive: UI tự động update khi data change
 
 **2. Repository Layer:**
 
@@ -1093,6 +1294,27 @@ class OfflineFirstArchitectureScreen extends StatelessWidget {
 
 ## 6. CRASH ANALYTICS (5 phút)
 
+### Mục đích của Crash Analytics
+**Tại sao cần Crash Analytics:**
+- ✅ **Production monitoring**: Theo dõi crashes trong production (không thể debug trực tiếp)
+- ✅ **Fast debugging**: Stack trace đầy đủ giúp fix bugs nhanh
+- ✅ **User impact**: Biết được bao nhiêu user bị ảnh hưởng
+- ✅ **Priority**: Biết crash nào quan trọng nhất cần fix trước
+- ✅ **Context**: Custom keys giúp hiểu context của crash (screen, action, user)
+- ✅ **Essential**: Không có crash analytics = "flying blind" trong production
+
+**Khi nào cần Crash Analytics:**
+- Production apps (không thể debug trực tiếp)
+- Apps với nhiều users (cần track impact)
+- Apps phức tạp (nhiều edge cases)
+- Apps cần reliability (critical business apps)
+
+**Vấn đề giải quyết:**
+- ❌ **Không có analytics**: Không biết app crash ở đâu, khi nào → Không thể fix
+- ❌ **User reports**: User không thể mô tả chính xác bug → Khó debug
+- ❌ **Missing context**: Không biết user đang làm gì khi crash → Thiếu thông tin
+- ✅ **Crashlytics**: Stack trace + custom keys + user info → Fix bugs nhanh
+
 ### Mở màn hình Crash Analytics
 **Nói:** "Firebase Crashlytics giúp theo dõi và fix bugs trong production"
 
@@ -1254,12 +1476,54 @@ class CrashDemoScreen extends StatelessWidget {
 ```
 
 
+**Technical Deep Dive - Crashlytics Error Handling Flow:**
+- ✅ **Error capture hierarchy**:
+  1. `FlutterError.onError`: Catch Flutter framework errors (widget errors)
+  2. `PlatformDispatcher.onError`: Catch async errors (Future, Stream)
+  3. `try-catch`: Manual error handling với `recordError()`
+- ✅ **Error types**:
+  - **Fatal errors**: App crashes (uncaught exceptions)
+  - **Non-fatal errors**: Caught errors, app continues running
+- ✅ **Stack trace**:
+  - Tự động capture stack trace
+  - Symbolicated: Convert addresses thành readable function names
+  - Line numbers: Chỉ ra exact line gây crash
+- ✅ **Custom keys limitations**:
+  - String keys: Max 40 characters
+  - String values: Max 100 characters
+  - Number values: 64-bit integers
+  - Boolean values: true/false
+  - Max 64 custom keys per crash report
+- ✅ **User identifier**:
+  - Max 1000 characters
+  - Should be unique per user
+  - Don't use PII (Personally Identifiable Information)
+
 **Kết luận:**
-"Firebase Crashlytics cung cấp stack trace đầy đủ, custom keys để filter, user identification. Essential cho production monitoring."
+"Firebase Crashlytics cung cấp stack trace đầy đủ, custom keys để filter, user identification. Essential cho production monitoring. Giúp fix bugs nhanh với đầy đủ context."
 
 ---
 
 ## 7. HOME WIDGET (3 phút)
+
+### Mục đích của Home Widget
+**Tại sao cần Home Widget:**
+- ✅ **User engagement**: App có mặt trên home screen → User nhớ đến app
+- ✅ **Quick access**: User xem thông tin nhanh không cần mở app
+- ✅ **Retention**: Tăng khả năng user quay lại sử dụng app
+- ✅ **Value proposition**: Hiển thị thông tin quan trọng ngay trên home screen
+- ✅ **Competitive advantage**: Nhiều apps không có widget → Stand out
+
+**Khi nào cần Home Widget:**
+- Apps với thông tin quan trọng cần hiển thị nhanh (calendar, weather, stats)
+- Apps cần tăng engagement (attendance, task reminders)
+- Apps với real-time data (stock prices, sports scores)
+- Apps muốn tăng retention
+
+**Vấn đề giải quyết:**
+- ❌ **Out of sight, out of mind**: User quên app khi không thấy → Low retention
+- ❌ **Friction**: User phải mở app để xem thông tin → Extra steps
+- ✅ **Home Widget**: Thông tin ngay trên home screen → High visibility, easy access
 
 ### Giải thích Home Widget
 **Nói:** "Home Widget cho phép hiển thị thông tin trên màn hình chính"
@@ -1365,12 +1629,58 @@ struct CalendarWidget: Widget {
 - ✅ Update từ Flutter app
 - ✅ Cần native code implementation
 
+**Technical Deep Dive - Home Widget Data Flow:**
+- ✅ **Data flow**:
+  1. Flutter app → `HomeWidget.saveWidgetData()` → Shared storage (UserDefaults/SharedPreferences)
+  2. Flutter app → `HomeWidget.updateWidget()` → Trigger native widget update
+  3. Native widget → Read from shared storage → Update UI
+- ✅ **Shared storage**:
+  - **iOS**: `UserDefaults` với group identifier
+  - **Android**: `SharedPreferences` với specific name
+  - **Data types**: String, int, bool, double
+  - **Limitations**: Không support complex objects (cần serialize)
+- ✅ **Widget update triggers**:
+  - Manual: `HomeWidget.updateWidget()` từ Flutter
+  - Automatic: Native widget có thể update theo schedule (iOS WidgetKit)
+  - Background: Update trong background task
+- ✅ **Native implementation requirements**:
+  - **Android**: 
+    - `AppWidgetProvider` class
+    - `widget_info.xml` configuration
+    - Layout XML files
+  - **iOS**:
+    - Widget extension target
+    - `Widget` struct với SwiftUI
+    - `TimelineProvider` cho scheduled updates
+
 **Kết luận:**
-"Home Widget giúp app có mặt trên home screen, tăng khả năng user quay lại sử dụng app. Cần implement native code cho Android/iOS."
+"Home Widget giúp app có mặt trên home screen, tăng khả năng user quay lại sử dụng app. Cần implement native code cho Android/iOS. Data flow: Flutter → Shared storage → Native widget."
 
 ---
 
 ## 8. DEBUG SUPERPOWERS (5 phút)
+
+### Mục đích của Debug Superpowers
+**Tại sao cần Debug Tools:**
+- ✅ **Performance optimization**: Tìm bottlenecks, optimize app performance
+- ✅ **Memory leaks**: Phát hiện memory leaks, optimize memory usage
+- ✅ **Network monitoring**: Theo dõi network requests, optimize API calls
+- ✅ **Widget inspection**: Hiểu widget tree, debug layout issues
+- ✅ **Frame rendering**: Profile frame rendering, đảm bảo 60fps
+- ✅ **Production quality**: Debug tools giúp tạo app chất lượng production
+
+**Khi nào cần Debug Tools:**
+- Apps với performance issues (lag, jank)
+- Apps với memory problems (crashes, slow)
+- Apps với complex UI (nhiều widgets, animations)
+- Apps cần optimization (battery, data usage)
+- Production apps (cần quality assurance)
+
+**Vấn đề giải quyết:**
+- ❌ **Slow app**: App lag, jank → Bad UX
+- ❌ **High memory**: App dùng nhiều memory → Crashes, slow
+- ❌ **Inefficient**: Load images quá lớn, rebuild không cần thiết → Waste resources
+- ✅ **Debug Tools**: Profile, optimize → Smooth, efficient app
 
 ### Mở màn hình Debug Superpowers
 **Nói:** "Debug tools giúp chúng ta phát triển và tối ưu hiệu năng"
@@ -1531,8 +1841,30 @@ if (kReleaseMode) {
 6. ✅ **Avoid setState in build**: Prevent rebuild loops
 7. ✅ **Use keys**: Optimize widget updates
 
+**Technical Deep Dive - Performance Profiling:**
+- ✅ **Flutter DevTools**:
+  - **Performance tab**: Profile frame rendering, find jank
+  - **Memory tab**: Track memory usage, find leaks
+  - **Network tab**: Monitor API calls, optimize requests
+  - **Widget Inspector**: Inspect widget tree, find expensive rebuilds
+  - **Timeline**: View frame-by-frame rendering
+- ✅ **Performance overlay**:
+  - `showPerformanceOverlay: true`: Show FPS và frame rendering time
+  - Red bars: Frame took > 16ms (jank)
+  - Green bars: Frame took < 16ms (smooth)
+- ✅ **Image optimization techniques**:
+  - **DPR calculation**: `deviceWidth * devicePixelRatio = realWidth`
+  - **Example**: iPhone 14 Pro (393px width, 3x DPR) → Request 1179px image
+  - **Benefit**: Tiết kiệm bandwidth, faster loading
+  - **Alternative**: Request 4000px image → Waste bandwidth, slower
+- ✅ **Rebuild optimization**:
+  - `const` constructors: Widget không rebuild khi parent rebuilds
+  - `RepaintBoundary`: Isolate repaint area
+  - `AutomaticKeepAlive`: Keep widgets alive (prevent rebuild)
+  - Keys: Optimize widget updates (ValueKey, ObjectKey, UniqueKey)
+
 **Kết luận:**
-"Performance optimization quan trọng cho UX. Image optimization với DPR tiết kiệm bandwidth. DevTools để profile và debug. Best practices để app mượt mà."
+"Performance optimization quan trọng cho UX. Image optimization với DPR tiết kiệm bandwidth. DevTools để profile và debug. Best practices để app mượt mà. Target: 60fps, no jank, low memory usage."
 
 ---
 
@@ -1765,4 +2097,3 @@ A: Lazy loading, image optimization với DPR, const widgets, efficient rebuilds
 ---
 
 **Chúc bạn demo thành công! 🚀**
-
