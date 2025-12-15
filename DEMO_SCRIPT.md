@@ -9,15 +9,16 @@
 
 **Các feature sẽ demo:**
 1. BLoC: Visualize, state/flow diagram & learn analysis
-2. Animation Training - Hiểu về animation trong Flutter
-3. Painting and Custom Drawing - Vẽ và tùy chỉnh giao diện
-4. Rich Text Editor - Editor văn bản phong phú
-5. Sliver Training - Layout nâng cao với Sliver
-6. Debug Superpowers - Công cụ debug và performance
-7. Attendance (Offline First) - Kiến trúc offline-first
+2. Kiến trúc offline-first
+3. Animation Training - Hiểu về animation trong Flutter
+4. Painting and Custom Drawing - Vẽ và tùy chỉnh giao diện
+5. Rich Text Editor - Editor văn bản phong phú
+6. Sliver Training - Layout nâng cao với Sliver
+7. Debug Superpowers - Công cụ debug và performance
 8. Crash Analytics - Theo dõi lỗi với Firebase Crashlytics
 
 ---
+
 ## 1. BLoC: Visualize, state/flow diagram & learn analysis
 Đầu tiên chúng ta đi phân tích lần lượt từng cụm từ
 **Visualize trong BLoC là gì?**
@@ -39,8 +40,8 @@ Thay vào đó: “Nhìn thấy toàn bộ state & luồng chuyển đổi trư�
 
 **Flow diagram là gì?**
 - Flow diagram mô tả:
-  - Khi Event xảy ra
-  - xử lý gì việc gì
+  - quá trình khi Event xảy ra
+  - quá trình xử lý gì việc gì
   - Emit state nào
 ví dụ:
     User taps Login
@@ -65,8 +66,7 @@ Khi bắt đầu làm 1 vấn đề gì đó thì e sẽ có những câu hỏi 
 - Viết code BLoC/Cubit ngắn – sạch – dễ đọc
 - UI trở nên đơn giản & phản chiếu đúng logic
 - Test cực kỳ dễ và chính xác
-- Hạn chế việc đập đi xây lại BLoC khi feature lớn dần
-
+- Hạn chế việc đập đi xây lại BLoC/Cubit khi feature lớn dần
 
 ## 1. OFFLINE FIRST ARCHITECTURE
 
@@ -76,9 +76,6 @@ Khi bắt đầu làm 1 vấn đề gì đó thì e sẽ có những câu hỏi 
 - Network chỉ dùng để đồng bộ (sync), không phải để app hoạt động
 - Người dùng không bị block vì mất mạng
 
-### Mở màn hình Attendance
-**Nói:** "Đây là feature quan trọng nhất - Offline First Architecture"
-
 ### Giải thích kiến trúc:
 1. **Local Database (Drift/SQLite):**
    - Lưu dữ liệu offline
@@ -87,7 +84,6 @@ Khi bắt đầu làm 1 vấn đề gì đó thì e sẽ có những câu hỏi 
 2. **Repository Pattern:**
    - Tách biệt data source (local vs remote)
    - Xử lý sync logic
-   - Single source of truth
 
 3. **State Management (BLoC/Cubit):**
    - Quản lý state của attendance
@@ -492,10 +488,7 @@ class OfflineFirstArchitectureScreen extends StatelessWidget {
 - ✅ **Custom UI**: Vẽ UI không có sẵn trong Flutter widgets
 - ✅ **Brand identity**: Tạo custom graphics phù hợp với brand
 - ✅ **Performance**: Vẽ trực tiếp bằng Canvas API, hiệu năng cao
-- ✅ **Flexibility**: Vẽ bất kỳ hình dạng nào (charts, custom shapes, illustrations)
-
-### Mở màn hình Painting and Custom Drawing
-**Nói:** "Tiếp theo là Painting - khi bạn cần vẽ custom UI không có sẵn"
+- ✅ **Flexibility**: Vẽ bất kỳ hình dạng nào (charts, custom shapes...)
 
 ### 2.1 Painting Bear
 
@@ -504,6 +497,7 @@ class OfflineFirstArchitectureScreen extends StatelessWidget {
 - ✅ **Interactive**: Eye tracking cho thấy khả năng tương tác
 - ✅ **Coordinate system**: Hiểu cách làm việc với coordinates
 - ✅ **Canvas API**: Thực hành các methods cơ bản của Canvas
+
 **Demo:**
 - Click vào "Painting Bear"
 - Di chuyển mouse/pointer → mắt con gấu theo dõi
@@ -909,153 +903,7 @@ class _Header extends SliverPersistentHeaderDelegate {
 
 ---
 
-## 4. RICH TEXT EDITOR (4 phút)
-
-### Mục đích của Rich Text Editor
-**Tại sao cần Rich Text Editor:**
-- ✅ **User content**: Cho phép user tạo nội dung phong phú (formatting, links, lists)
-- ✅ **Note apps**: Essential cho note-taking apps (Notion, Evernote style)
-- ✅ **Comment systems**: Cho phép user format comments, replies
-- ✅ **Document editing**: Tạo documents với formatting
-- ✅ **Delta format**: Operational transform format, dễ sync và collaborate
-
-**Khi nào cần Rich Text Editor:**
-- Note-taking applications
-- Comment/reply systems
-- Document editors
-- Email composers
-- Blog post editors
-- Collaborative editing (real-time sync)
-
-### Mở màn hình Rich Text Editor
-**Nói:** "Rich Text Editor sử dụng flutter_quill - một editor mạnh mẽ"
-
-### Demo:
-- Click vào "Rich Text Editor Training"
-- Thử các tính năng:
-  - Format text (bold, italic, underline)
-  - Thêm heading
-  - Tạo list (bullet, numbered)
-  - Chèn link
-  - Undo/Redo
-- Click Save → Load để xem JSON serialization
-
-**Key Technical Points:**
-- ✅ **flutter_quill package**: Rich text editor library
-- ✅ **QuillController**: Quản lý document và selection
-- ✅ **Document**: Delta format (operational transform)
-- ✅ **Delta format**: JSON representation của document
-- ✅ **QuillEditor**: Widget hiển thị editor
-- ✅ **QuillSimpleToolbar**: Toolbar với các formatting buttons
-- ✅ **toDelta()**: Convert document sang Delta
-- ✅ **fromDelta()**: Convert Delta về Document
-- ✅ **toPlainText()**: Extract plain text (cho search, indexing)
-
-**Delta Format Example:**
-```json
-[
-  {"insert": "Hello "},
-  {"insert": "World", "attributes": {"bold": true}},
-  {"insert": "\n"}
-]
-```
-
-**Technical Deep Dive - Delta Format:**
-- ✅ **Operational Transform (OT)**: Format được thiết kế cho real-time collaboration
-- ✅ **Composable**: Có thể combine nhiều operations (insert, delete, retain)
-- ✅ **Efficient**: Chỉ lưu changes, không lưu toàn bộ document state
-- ✅ **Serializable**: Dễ convert sang JSON để lưu database/API
-- ✅ **Delta operations**:
-  - `{"insert": "text"}`: Insert text
-  - `{"insert": "text", "attributes": {...}}`: Insert với formatting
-  - `{"delete": 5}`: Delete 5 characters
-  - `{"retain": 3}`: Retain (giữ nguyên) 3 characters
-- ✅ **Attributes**: 
-  - `bold`, `italic`, `underline`: Text formatting
-  - `link`: URL
-  - `header`: Heading level (1-6)
-  - `list`: Bullet/numbered list
-  - `blockquote`: Quote block
-
-**Kết luận:**
-"flutter_quill sử dụng Delta format (operational transform) để quản lý document. Dễ serialize/deserialize, phù hợp cho note apps, comment systems. Delta format cũng hỗ trợ real-time collaboration."
-
-**Technical Details:**
-
-```dart
-class _RichTextEditorPageState extends State<RichTextEditorPage> {
-  late QuillController _controller;
-  final FocusNode _focusNode = FocusNode();
-  String? _savedJson;  // Store as JSON
-
-  @override
-  void initState() {
-    super.initState();
-    // 1. Tạo Document (Delta format)
-    final doc = Document();
-    _controller = QuillController(
-      document: doc,
-      selection: const TextSelection.collapsed(offset: 0),
-    );
-  }
-
-  // 2. Save document to JSON
-  void _saveDocument() {
-    final delta = _controller.document.toDelta();
-    final json = jsonEncode(delta.toJson());
-    setState(() {
-      _savedJson = json;
-    });
-  }
-
-  // 3. Load document from JSON
-  void _loadDocument() {
-    final List<dynamic> decoded = jsonDecode(_savedJson!);
-    final Delta delta = Delta.fromJson(decoded);
-    final doc = Document.fromDelta(delta);
-    setState(() {
-      _controller = QuillController(
-        document: doc,
-        selection: const TextSelection.collapsed(offset: 0),
-      );
-    });
-  }
-
-  // 4. Convert to plain text
-  String _toPlainText() => _controller.document.toPlainText();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          // Toolbar
-          QuillSimpleToolbar(
-            controller: _controller,
-            config: const QuillSimpleToolbarConfig(
-              multiRowsDisplay: true,  // Toolbar nhiều hàng
-            ),
-          ),
-          // Editor
-          Expanded(
-            child: QuillEditor(
-              controller: _controller,
-              focusNode: _focusNode,
-              config: const QuillEditorConfig(
-                placeholder: 'Hello! This is a RichText editor demo.',
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-```
-
----
-
-## 5. DEBUG SUPERPOWERS (5 phút)
+## 4. DEBUG SUPERPOWERS (5 phút)
 
 ### Mục đích của Debug Superpowers
 **Tại sao cần Debug Tools:**
@@ -1262,6 +1110,152 @@ if (kReleaseMode) {
 
 **Kết luận:**
 "Performance optimization quan trọng cho UX. Image optimization với DPR tiết kiệm bandwidth. DevTools để profile và debug. Best practices để app mượt mà. Target: 60fps, no jank, low memory usage."
+
+---
+
+## 5. RICH TEXT EDITOR (4 phút)
+
+### Mục đích của Rich Text Editor
+**Tại sao cần Rich Text Editor:**
+- ✅ **User content**: Cho phép user tạo nội dung phong phú (formatting, links, lists)
+- ✅ **Note apps**: Essential cho note-taking apps (Notion, Evernote style)
+- ✅ **Comment systems**: Cho phép user format comments, replies
+- ✅ **Document editing**: Tạo documents với formatting
+- ✅ **Delta format**: Operational transform format, dễ sync và collaborate
+
+**Khi nào cần Rich Text Editor:**
+- Note-taking applications
+- Comment/reply systems
+- Document editors
+- Email composers
+- Blog post editors
+- Collaborative editing (real-time sync)
+
+### Mở màn hình Rich Text Editor
+**Nói:** "Rich Text Editor sử dụng flutter_quill - một editor mạnh mẽ"
+
+### Demo:
+- Click vào "Rich Text Editor Training"
+- Thử các tính năng:
+  - Format text (bold, italic, underline)
+  - Thêm heading
+  - Tạo list (bullet, numbered)
+  - Chèn link
+  - Undo/Redo
+- Click Save → Load để xem JSON serialization
+
+**Key Technical Points:**
+- ✅ **flutter_quill package**: Rich text editor library
+- ✅ **QuillController**: Quản lý document và selection
+- ✅ **Document**: Delta format (operational transform)
+- ✅ **Delta format**: JSON representation của document
+- ✅ **QuillEditor**: Widget hiển thị editor
+- ✅ **QuillSimpleToolbar**: Toolbar với các formatting buttons
+- ✅ **toDelta()**: Convert document sang Delta
+- ✅ **fromDelta()**: Convert Delta về Document
+- ✅ **toPlainText()**: Extract plain text (cho search, indexing)
+
+**Delta Format Example:**
+```json
+[
+  {"insert": "Hello "},
+  {"insert": "World", "attributes": {"bold": true}},
+  {"insert": "\n"}
+]
+```
+
+**Technical Deep Dive - Delta Format:**
+- ✅ **Operational Transform (OT)**: Format được thiết kế cho real-time collaboration
+- ✅ **Composable**: Có thể combine nhiều operations (insert, delete, retain)
+- ✅ **Efficient**: Chỉ lưu changes, không lưu toàn bộ document state
+- ✅ **Serializable**: Dễ convert sang JSON để lưu database/API
+- ✅ **Delta operations**:
+  - `{"insert": "text"}`: Insert text
+  - `{"insert": "text", "attributes": {...}}`: Insert với formatting
+  - `{"delete": 5}`: Delete 5 characters
+  - `{"retain": 3}`: Retain (giữ nguyên) 3 characters
+- ✅ **Attributes**: 
+  - `bold`, `italic`, `underline`: Text formatting
+  - `link`: URL
+  - `header`: Heading level (1-6)
+  - `list`: Bullet/numbered list
+  - `blockquote`: Quote block
+
+**Kết luận:**
+"flutter_quill sử dụng Delta format (operational transform) để quản lý document. Dễ serialize/deserialize, phù hợp cho note apps, comment systems. Delta format cũng hỗ trợ real-time collaboration."
+
+**Technical Details:**
+
+```dart
+class _RichTextEditorPageState extends State<RichTextEditorPage> {
+  late QuillController _controller;
+  final FocusNode _focusNode = FocusNode();
+  String? _savedJson;  // Store as JSON
+
+  @override
+  void initState() {
+    super.initState();
+    // 1. Tạo Document (Delta format)
+    final doc = Document();
+    _controller = QuillController(
+      document: doc,
+      selection: const TextSelection.collapsed(offset: 0),
+    );
+  }
+
+  // 2. Save document to JSON
+  void _saveDocument() {
+    final delta = _controller.document.toDelta();
+    final json = jsonEncode(delta.toJson());
+    setState(() {
+      _savedJson = json;
+    });
+  }
+
+  // 3. Load document from JSON
+  void _loadDocument() {
+    final List<dynamic> decoded = jsonDecode(_savedJson!);
+    final Delta delta = Delta.fromJson(decoded);
+    final doc = Document.fromDelta(delta);
+    setState(() {
+      _controller = QuillController(
+        document: doc,
+        selection: const TextSelection.collapsed(offset: 0),
+      );
+    });
+  }
+
+  // 4. Convert to plain text
+  String _toPlainText() => _controller.document.toPlainText();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          // Toolbar
+          QuillSimpleToolbar(
+            controller: _controller,
+            config: const QuillSimpleToolbarConfig(
+              multiRowsDisplay: true,  // Toolbar nhiều hàng
+            ),
+          ),
+          // Editor
+          Expanded(
+            child: QuillEditor(
+              controller: _controller,
+              focusNode: _focusNode,
+              config: const QuillEditorConfig(
+                placeholder: 'Hello! This is a RichText editor demo.',
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
 
 ---
 
@@ -1477,161 +1471,7 @@ class CrashDemoScreen extends StatelessWidget {
 
 ---
 
-## 7. HOME WIDGET (3 phút)
-
-### Mục đích của Home Widget
-**Tại sao cần Home Widget:**
-- ✅ **User engagement**: App có mặt trên home screen → User nhớ đến app
-- ✅ **Quick access**: User xem thông tin nhanh không cần mở app
-- ✅ **Retention**: Tăng khả năng user quay lại sử dụng app
-- ✅ **Value proposition**: Hiển thị thông tin quan trọng ngay trên home screen
-- ✅ **Competitive advantage**: Nhiều apps không có widget → Stand out
-
-**Khi nào cần Home Widget:**
-- Apps với thông tin quan trọng cần hiển thị nhanh (calendar, weather, stats)
-- Apps cần tăng engagement (attendance, task reminders)
-- Apps với real-time data (stock prices, sports scores)
-- Apps muốn tăng retention
-
-**Vấn đề giải quyết:**
-- ❌ **Out of sight, out of mind**: User quên app khi không thấy → Low retention
-- ❌ **Friction**: User phải mở app để xem thông tin → Extra steps
-- ✅ **Home Widget**: Thông tin ngay trên home screen → High visibility, easy access
-
-### Giải thích Home Widget
-**Nói:** "Home Widget cho phép hiển thị thông tin trên màn hình chính"
-
-### Tính năng:
-- Widget trên home screen (Android/iOS)
-- Hiển thị thông tin nhanh không cần mở app
-- Ví dụ: Calendar widget, weather widget, attendance widget
-
-**Technical Details:**
-
-```dart
-// home_widget.dart
-import 'package:home_widget/home_widget.dart';
-import 'package:intl/intl.dart';
-
-class CalendarWidgetService {
-  Future<void> updateCalendarWidget() async {
-    final now = DateTime.now();
-
-    // 1. Format data
-    final day = DateFormat('dd').format(now);
-    final weekday = DateFormat('EEEE').format(now); // Monday, Tuesday…
-    final month = DateFormat('MMMM').format(now); // January…
-
-    // 2. Save data to shared storage
-    await HomeWidget.saveWidgetData<String>('day', day);
-    await HomeWidget.saveWidgetData<String>('weekday', weekday);
-    await HomeWidget.saveWidgetData<String>('month', month);
-
-    // 3. Update widget (triggers native widget update)
-    await HomeWidget.updateWidget(
-      qualifiedAndroidName: 
-          'com.example.flutter_training_2025_11_05.CalendarWidgetProvider',
-    );
-  }
-}
-
-// main.dart - Update widget on app start
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  if (!kIsWeb) {
-    await CalendarWidgetService().updateCalendarWidget();
-  }
-  // ...
-}
-```
-
-**Key Technical Points:**
-- ✅ **home_widget package**: Package để update native widgets
-- ✅ **saveWidgetData()**: Save data to shared storage (UserDefaults/SharedPreferences)
-- ✅ **updateWidget()**: Trigger native widget update
-- ✅ **qualifiedAndroidName**: Android widget provider class name
-- ✅ **Native implementation**: Cần implement native code (Android/iOS)
-- ✅ **Data types**: String, int, bool, double supported
-
-**Android Implementation (Kotlin):**
-```kotlin
-// CalendarWidgetProvider.kt
-class CalendarWidgetProvider : AppWidgetProvider() {
-    override fun onUpdate(
-        context: Context,
-        appWidgetManager: AppWidgetManager,
-        appWidgetIds: IntArray
-    ) {
-        // Read data from SharedPreferences
-        val prefs = context.getSharedPreferences("HomeWidget", Context.MODE_PRIVATE)
-        val day = prefs.getString("day", "")
-        val weekday = prefs.getString("weekday", "")
-        val month = prefs.getString("month", "")
-        
-        // Update widget UI
-        // ...
-    }
-}
-```
-
-**iOS Implementation (Swift):**
-```swift
-// CalendarWidget.swift
-struct CalendarWidget: Widget {
-    var body: some WidgetConfiguration {
-        StaticConfiguration(kind: "CalendarWidget") { entry in
-            CalendarWidgetEntryView(entry: entry)
-        }
-        .configurationDisplayName("Calendar")
-        .description("Shows current date")
-    }
-}
-```
-
-**Use Cases:**
-- Calendar widget
-- Weather widget
-- Attendance widget
-- Task/Reminder widget
-- Stats widget
-
-**Điểm chính:**
-- ✅ Tăng engagement với user
-- ✅ Hiển thị thông tin quan trọng
-- ✅ Native widget trên home screen
-- ✅ Update từ Flutter app
-- ✅ Cần native code implementation
-
-**Technical Deep Dive - Home Widget Data Flow:**
-- ✅ **Data flow**:
-  1. Flutter app → `HomeWidget.saveWidgetData()` → Shared storage (UserDefaults/SharedPreferences)
-  2. Flutter app → `HomeWidget.updateWidget()` → Trigger native widget update
-  3. Native widget → Read from shared storage → Update UI
-- ✅ **Shared storage**:
-  - **iOS**: `UserDefaults` với group identifier
-  - **Android**: `SharedPreferences` với specific name
-  - **Data types**: String, int, bool, double
-  - **Limitations**: Không support complex objects (cần serialize)
-- ✅ **Widget update triggers**:
-  - Manual: `HomeWidget.updateWidget()` từ Flutter
-  - Automatic: Native widget có thể update theo schedule (iOS WidgetKit)
-  - Background: Update trong background task
-- ✅ **Native implementation requirements**:
-  - **Android**: 
-    - `AppWidgetProvider` class
-    - `widget_info.xml` configuration
-    - Layout XML files
-  - **iOS**:
-    - Widget extension target
-    - `Widget` struct với SwiftUI
-    - `TimelineProvider` cho scheduled updates
-
-**Kết luận:**
-"Home Widget giúp app có mặt trên home screen, tăng khả năng user quay lại sử dụng app. Cần implement native code cho Android/iOS. Data flow: Flutter → Shared storage → Native widget."
-
----
-
-## 2. ANIMATION TRAINING (8 phút)
+## 7. ANIMATION TRAINING (8 phút)
 
 ### Mở màn hình Animation
 **Nói:** "Bắt đầu với Animation - một trong những điểm mạnh của Flutter"
@@ -1644,7 +1484,7 @@ struct CalendarWidget: Widget {
 - ✅ **Engagement**: Tăng sự tương tác và hứng thú của user với app
 - ✅ **Flutter strength**: Flutter có animation framework mạnh mẽ, dễ sử dụng
 
-### 2.1 Implicit Animation
+### 7.1 Implicit Animation
 
 **Mục đích:**
 - ✅ **Đơn giản hóa**: Code ngắn gọn, không cần quản lý AnimationController
@@ -1704,7 +1544,7 @@ AnimatedContainer(
   - `Curves.elasticOut` - Elastic effect
 - ✅ **Performance**: Sử dụng `AnimationController` internally, optimized cho performance
 
-### 2.2 Explicit Animation
+### 7.2 Explicit Animation
 
 **Mục đích:**
 - ✅ **Kiểm soát chi tiết**: Play, pause, reverse, repeat animation
@@ -1803,7 +1643,7 @@ class _AnimationWidgetState extends State<AnimationWidget>
 }
 ```
 
-### 2.3 Animated Card List
+### 7.3 Animated Card List
 
 **Mục đích:**
 - ✅ **Visual feedback**: User thấy rõ item được thêm/xóa ở đâu
